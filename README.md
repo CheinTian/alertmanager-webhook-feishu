@@ -15,7 +15,7 @@
 
 ## 使用
 
-基于参考配置文件 [config.example.yml](config.example.yml) 调整。运行：
+基于参考配置文件 [config.example.yml](examples/config.example.yml) 调整。运行：
 
 ```bash
 $ alertmanager-webhook-feishu server --config=/path/to/config.yml

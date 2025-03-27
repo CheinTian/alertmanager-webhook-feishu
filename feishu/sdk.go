@@ -115,16 +115,19 @@ func (s Sdk) TenantAccessToken() (*tokenResponse, error) {
 
 // wired response:
 // response of success
-//{
-//    "Extra": null,
-//    "StatusCode": 0,
-//    "StatusMessage": "success"
-//}
+//
+//	{
+//	   "Extra": null,
+//	   "StatusCode": 0,
+//	   "StatusMessage": "success"
+//	}
+//
 // response of failure
-//{
-//    "code": 99991300,
-//    "msg": "invalid request body: not json, invalid character '\\n' in string literal"
-//}
+//
+//	{
+//	   "code": 99991300,
+//	   "msg": "invalid request body: not json, invalid character '\\n' in string literal"
+//	}
 type webhookV2Response struct {
 	StatusCode    int    `json:"StatusCode"`
 	StatusMessage string `json:"StatusMessage"`

@@ -4,8 +4,10 @@ import (
 	"embed"
 	"errors"
 	"fmt"
+	amtemplate "github.com/prometheus/alertmanager/template"
 	"github.com/sirupsen/logrus"
 	"net/url"
+	"path/filepath"
 	"strings"
 	"text/template"
 	"time"
@@ -48,6 +50,39 @@ func init() {
 			return fmt.Sprintf("[%s](%s)", k, v)
 		},
 		"contains": strings.Contains,
+		"default": func(a, b string) string {
+			if a == "" {
+				return b
+			}
+			return a
+		},
+		"dict": func(values ...interface{}) (map[string]interface{}, error) {
+			if len(values)%2 != 0 {
+				return nil, errors.New("invalid dict call")
+			}
+			dict := make(map[string]interface{}, len(values)/2)
+			for i := 0; i < len(values); i += 2 {
+				key, ok := values[i].(string)
+				if !ok {
+					return nil, errors.New("dict keys must be strings")
+				}
+				dict[key] = values[i+1]
+			}
+			return dict, nil
+		},
+		"filterByStatus": func(alerts []amtemplate.Alert, status string) []amtemplate.Alert {
+			// 预分配切片，提高性能
+			filteredAlerts := make([]amtemplate.Alert, 0, len(alerts))
+
+			for _, alert := range alerts {
+				// 直接比较 Status 字段
+				if alert.Status == status {
+					filteredAlerts = append(filteredAlerts, alert)
+				}
+			}
+
+			return filteredAlerts
+		},
 	}
 
 	// embed
@@ -92,7 +127,7 @@ func GetCustomTemplate(filename string) (*template.Template, error) {
 		return t, nil
 	}
 
-	t, err := template.New(filename).Funcs(funcMap).ParseFiles(filename)
+	t, err := template.New(filepath.Base(filename)).Funcs(funcMap).ParseFiles(filename)
 	if err != nil {
 		return nil, err
 	}
