@@ -83,6 +83,9 @@ func init() {
 
 			return filteredAlerts
 		},
+		"removeEmptyLines": func(s string) string {
+			return strings.ReplaceAll(s, "\n\n", "\n")
+		},
 	}
 
 	// embed

@@ -15,7 +15,7 @@
 "tag": "div",
 "text": {
 "tag": "lark_md",
-"content": "## {{if .Resolved}}告警恢复 ✅{{else}}告警通知 🚨{{end}}\n\n### 告警概要\n**{{.Alert.Annotations.summary}}**\n\n### 告警详情\n{{.Alert.Annotations.description}}\n\n#### {{if .Resolved}}恢复{{else}}告警{{end}}时间\n⏰ {{if .Resolved}}{{.Alert.EndsAt.Format "2006-01-02 15:04:05"}}{{else}}{{.Alert.StartsAt.Format "2006-01-02 15:04:05"}}{{end}}\n\n### 监控链接\n[查看详细监控信息]({{.Alert.GeneratorURL}})"
+"content": "## {{if .Resolved}}告警恢复 ✅{{else}}告警通知 🚨{{end}}\n\n### 告警概要\n**{{.Alert.Annotations.summary}}**\n\n### 告警详情\n{{.Alert.Annotations.description | removeEmptyLines}}\n\n#### {{if .Resolved}}恢复{{else}}告警{{end}}时间\n⏰ {{if .Resolved}}{{.Alert.EndsAt.Format "2006-01-02 15:04:05"}}{{else}}{{.Alert.StartsAt.Format "2006-01-02 15:04:05"}}{{end}}\n\n### 监控链接\n[查看详细监控信息]({{.Alert.GeneratorURL}})"
 }
 },
 {
